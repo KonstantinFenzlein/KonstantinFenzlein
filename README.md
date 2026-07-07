@@ -13,9 +13,6 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" height="40" alt="angularjs logo"  />
 </div>
 
-
-
-
 ###
 
 <img src="https://raw.githubusercontent.com/KonstantinFenzlein/KonstantinFenzlein/snake-output/snake.svg" alt="Snake animation" />
