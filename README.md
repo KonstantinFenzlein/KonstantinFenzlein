@@ -17,7 +17,7 @@
 
 <img src="https://raw.githubusercontent.com/KonstantinFenzlein/KonstantinFenzlein/snake-output/snake.svg" alt="Snake animation" />
 
-####
+###
 
 <div align="left">
   <a href="https://www.linkedin.com/in/konstantin-fenzlein-8956a1232/" target="_blank">
