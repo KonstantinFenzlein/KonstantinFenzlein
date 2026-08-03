@@ -15,7 +15,7 @@
 
 
 
-####
+###
 
 <img src="https://raw.githubusercontent.com/KonstantinFenzlein/KonstantinFenzlein/snake-output/snake.svg" alt="Snake animation" />
 
