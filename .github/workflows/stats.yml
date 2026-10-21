@@ -1,0 +1,59 @@
+name: Generate Stats
+
+# Braucht ein Secret "STATS_TOKEN": ein Personal Access Token (classic)
+# mit den Rechten "repo" und "read:user".
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: jstrieb/github-stats
+          path: gs
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate images
+        working-directory: gs
+        run: |
+          pip install -r requirements.txt
+          python3 generate_images.py
+        env:
+          ACCESS_TOKEN: ${{ secrets.STATS_TOKEN }}
+          GITHUB_ACTOR: ${{ github.repository_owner }}
+          EXCLUDED: ""
+          EXCLUDED_LANGS: ""
+          EXCLUDE_FORKED_REPOS: "true"
+
+      - name: Rename outputs
+        run: |
+          mkdir -p out-stats out-langs
+          cp gs/generated/overview.svg out-stats/stats.svg
+          cp gs/generated/languages.svg out-langs/languages.svg
+
+      - uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: stats-output
+          build_dir: out-stats
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: languages-output
+          build_dir: out-langs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
