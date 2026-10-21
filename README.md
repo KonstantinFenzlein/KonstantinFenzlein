@@ -5,11 +5,6 @@
   Mit Erfahrung in Steuer- &amp; Kanzleidigitalisierung, Prozessoptimierung und Digitalforensik.
 </p>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/KonstantinFenzlein/KonstantinFenzlein/stats-output/stats.svg" height="150" alt="GitHub-Statistiken" />
-  <img src="https://raw.githubusercontent.com/KonstantinFenzlein/KonstantinFenzlein/languages-output/languages.svg" height="150" alt="Meistgenutzte Sprachen" />
-</div>
-
 ### 🛠 Tech-Stack
 
 <p>
