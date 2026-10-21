@@ -1,7 +1,7 @@
 name: Generate Stats
 
-# Braucht ein Secret "STATS_TOKEN": ein Personal Access Token (classic)
-# mit den Rechten "repo" und "read:user".
+# Braucht das Secret STATS_TOKEN (Personal Access Token classic
+# mit den Rechten repo, read:user und user:email).
 on:
   schedule:
     - cron: "0 4 * * *"
@@ -15,34 +15,35 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
           repository: jstrieb/github-stats
           path: gs
 
-      - uses: actions/setup-python@v5
+      - uses: mlugg/setup-zig@v2
         with:
-          python-version: "3.12"
+          version: 0.16.0
+
+      - name: Build
+        working-directory: gs
+        run: zig build
 
       - name: Generate images
         working-directory: gs
-        run: |
-          pip install -r requirements.txt
-          python3 generate_images.py
+        run: ./zig-out/bin/github-stats
         env:
           ACCESS_TOKEN: ${{ secrets.STATS_TOKEN }}
-          GITHUB_ACTOR: ${{ github.repository_owner }}
-          EXCLUDED: ""
-          EXCLUDED_LANGS: ""
-          EXCLUDE_FORKED_REPOS: "true"
+          EXCLUDE_PRIVATE: "false"
+          SILENT: "true"
+          MAX_RETRIES: "5"
 
-      - name: Rename outputs
+      - name: Collect outputs
         run: |
           mkdir -p out-stats out-langs
-          cp gs/generated/overview.svg out-stats/stats.svg
-          cp gs/generated/languages.svg out-langs/languages.svg
+          cp "$(find gs -name overview.svg -not -path '*/.git/*' | head -n 1)" out-stats/stats.svg
+          cp "$(find gs -name languages.svg -not -path '*/.git/*' | head -n 1)" out-langs/languages.svg
 
       - uses: crazy-max/ghaction-github-pages@v4
         with:
